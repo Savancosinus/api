@@ -85,7 +85,6 @@ public class FichierServiceImpl implements FichierService {
      * @return Un objet "Reference" correspondant à la ligne en succès traitée.
      */
     private Reference traiterLigneEnSucces(String ligneEntrante) {
-//        Color color = Color.valueOf(Pattern.compile(patternBloc2).matcher(ligneEntrante).group());
         Reference reference = new Reference();
 
         Pattern pattern1 = Pattern.compile(patternBloc1);
@@ -97,6 +96,12 @@ public class FichierServiceImpl implements FichierService {
 
         if (matcher1.matches()) {
             reference.setNumReference(matcher1.group());
+        }
+        if (matcher3.matches()) {
+            reference.setPrice(Float.parseFloat(matcher3.group()));
+        }
+        if (matcher4.matches()) {
+            reference.setSize(Integer.parseInt(matcher4.group()));
         }
 
         return reference;

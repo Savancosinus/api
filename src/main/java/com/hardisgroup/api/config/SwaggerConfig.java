@@ -15,7 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-    public static final String TAG_CONTROLLER_API = "ControllerTest";
+    public static final String TAG_FICHIER_CONTROLLER = "FichierController";
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -25,6 +25,6 @@ public class SwaggerConfig {
                 // Exclusion des méthodes de tests
                 .paths(PathSelectors.regex("/api.*"))
                 // Tags (controller)
-                .build().tags(new Tag(TAG_CONTROLLER_API, "Controller de démo pour Hardis Group"));
+                .build().tags(new Tag(TAG_FICHIER_CONTROLLER, "Controller de fichier pour Hardis Group"));
     }
 }

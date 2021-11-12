@@ -29,13 +29,13 @@ import java.util.regex.Pattern;
 public class FichierServiceImpl implements FichierService {
 
     // Pattern Bloc n°1: Integer (exactement 10 chiffres).
-    private String patternBloc1 = "[0-9]{10}";
+    private String patternBloc1 = "(\\d{10})";
     // Pattern Bloc n°2: Code couleur (exactement 1 lettre).
     private String patternBloc2 = this.construirePatternCouleurs();
     // Pattern Bloc n°3: Nombre de type Float (valeur max non-spécifiée).
-    private String patternBloc3 = "[0-9]+\\.[0-9][0-9]?";
+    private String patternBloc3 = "(\\d+\\.\\d\\d?)";
     // Pattern Bloc n°4: Nombre de type Integer (valeur max non-spécifiée).
-    private final String patternBloc4 = "[0-9]{1,5}";
+    private final String patternBloc4 = "(\\d{1,5})";
     // Pattern de ligne: Regroupe les patterns 1/2/3/4 dans une même pattern (chaque bloc est séparé par un ";")
     private final String patternLigne = patternBloc1 + ";" + patternBloc2 + ";" + patternBloc3 + ";" + patternBloc4;
 
@@ -60,7 +60,7 @@ public class FichierServiceImpl implements FichierService {
             int indexLigne = 1;
 
             while ((ligne = reader.readLine()) != null) {
-                Pattern pattern = Pattern.compile(patternBloc1);
+                Pattern pattern = Pattern.compile(patternLigne);
                 Matcher matcher = pattern.matcher(ligne);
 
                 if (matcher.find()) {
@@ -86,22 +86,14 @@ public class FichierServiceImpl implements FichierService {
      */
     private Reference traiterLigneEnSucces(String ligneEntrante) {
         Reference reference = new Reference();
+        Pattern pattern = Pattern.compile(patternLigne);
+        Matcher matcher = pattern.matcher(ligneEntrante);
 
-        Pattern pattern1 = Pattern.compile(patternBloc1);
-        Matcher matcher1 = pattern1.matcher(ligneEntrante);
-        Pattern pattern3 = Pattern.compile(patternBloc3);
-        Matcher matcher3 = pattern3.matcher(ligneEntrante);
-        Pattern pattern4 = Pattern.compile(patternBloc4);
-        Matcher matcher4 = pattern4.matcher(ligneEntrante);
-
-        if (matcher1.matches()) {
-            reference.setNumReference(matcher1.group());
-        }
-        if (matcher3.matches()) {
-            reference.setPrice(Float.parseFloat(matcher3.group()));
-        }
-        if (matcher4.matches()) {
-            reference.setSize(Integer.parseInt(matcher4.group()));
+        if (matcher.find()) {
+            reference.setNumReference(matcher.group(1));
+            reference.setType(Color.valueOf(matcher.group(2)));
+            reference.setPrice(Float.parseFloat(matcher.group(3)));
+            reference.setSize(Integer.parseInt(matcher.group(4)));
         }
 
         return reference;
@@ -126,6 +118,6 @@ public class FichierServiceImpl implements FichierService {
     private String construirePatternCouleurs() {
         StringBuilder stringBuilder = new StringBuilder();
         Arrays.stream(Color.values()).forEach(color -> stringBuilder.append(color.name()));
-        return "[" + stringBuilder.toString() + "]";
+        return "(" + "[" + stringBuilder.toString() + "]"+ ")";
     }
 }

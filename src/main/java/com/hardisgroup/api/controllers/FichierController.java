@@ -6,7 +6,6 @@ import com.hardisgroup.api.exceptions.IOExceptionApi;
 import com.hardisgroup.api.models.ExceptionResponse;
 import com.hardisgroup.api.models.FichierConverti;
 import com.hardisgroup.api.services.FichierService;
-import com.hardisgroup.api.services.FichierServiceImpl;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +46,7 @@ public class FichierController {
 
     /**
      * Méthode permettant de traiter les exceptions de type "IOExceptionApi".
+     *
      * @param ex Exception capturée par la méthode.
      * @return Un objet "ExceptionResponse".
      */

@@ -33,12 +33,19 @@ public class FichierControllerTest {
         fichierController = new FichierController(fichierService);
     }
 
+    /**
+     * Tester la lecture de fichiers.
+     * Le fichier est présent sous "src/test/resources/abc.txt".
+     */
     @Test
-    public void testerUrlOK() throws Exception {
+    public void traiterFichierTestUrl_OK() throws Exception {
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(fichierController).build();
 
-        mockMvc.perform(get("/api/hello/{urlEntrante}/{format}/{urlSortante}", "url-fichier",
-                        FormatFichierEnSortie.XML, "url-fichier").param("name", "url-fichier"))
+        // MockMvc: Valorisation des RequestParam
+        mockMvc.perform(get("/api/fichier/traiter")
+                        .param("urlEntrante", "src/test/resources/abc.txt")
+                        .param("formatFichierEnSortie", FormatFichierEnSortie.JSON.toString())
+                        .param("urlSortante", "src/test/resources/abc.txt"))
                 .andExpect(status().isOk());
     }
 

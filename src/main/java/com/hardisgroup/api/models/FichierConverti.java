@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * DTO de l'objet "FichierConverti".
+ * DTO "FichierConverti".
  * Objet représentant un fichier converti par le service "FichierService".
  * Le fichier converti peut contenir de 0 à N lignes.
  * Chaque ligne est représentée en sortie par 1 objet "Reference" OU 1 objet "Error".

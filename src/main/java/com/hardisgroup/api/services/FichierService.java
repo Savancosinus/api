@@ -11,4 +11,6 @@ public interface FichierService {
 
     FichierConverti convertirFichierEntrant(
             String urlEntrante, FormatFichierEnSortie formatFichierEnSortie, String urlSortante) throws IOExceptionApi;
+
+    String testerApplication();
 }

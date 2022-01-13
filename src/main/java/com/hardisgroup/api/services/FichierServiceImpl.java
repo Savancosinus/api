@@ -40,6 +40,14 @@ public class FichierServiceImpl implements FichierService {
     private final String patternLigne = patternBloc1 + ";" + patternBloc2 + ";" + patternBloc3 + ";" + patternBloc4;
 
     /**
+     * Méthode de test.
+     * @return
+     */
+    public String testerApplication() {
+        return "Hello World!";
+    }
+
+    /**
      * Méthode permettant de traiter un fichier. Les fichiers traitées contiennent 0 à N lignes à convertir
      * en autant d'objet "Reference" (en cas de succès) ou "Error" (si la ligne contient des données en erreur).
      *
@@ -57,6 +65,8 @@ public class FichierServiceImpl implements FichierService {
 
         try (BufferedReader reader = new BufferedReader(new FileReader(fichierEntrant))) {
             String ligne;
+            // L'index débute à 1 pour référencer les lignes du fichier d'un point de vue "humain".
+            // Exemple: La ligne 1 doit avoir "Index=1", et non "Index=0".
             int indexLigne = 1;
 
             while ((ligne = reader.readLine()) != null) {
@@ -74,11 +84,15 @@ public class FichierServiceImpl implements FichierService {
             }
 
         } catch (IOException ex) {
-            throw new IOExceptionApi(HttpStatus.BAD_REQUEST, "fichier illisible ou corrompu.");
+            throw new IOExceptionApi(HttpStatus.BAD_REQUEST, "fichier illisible ou corrompu.", ex.getMessage());
         }
 
-        return new FichierConverti("Valoriser avec Apache CommonsIO", references, errors);
+        // Accès au nom du fichier via "File.getName()" (accès au fichier lui-même depuis un path)
+        return new FichierConverti(fichierEntrant.getName(), references, errors);
+
     }
+
+
 
     /**
      * @param ligneEntrante Ligne en succès à traiter.
@@ -118,6 +132,6 @@ public class FichierServiceImpl implements FichierService {
     private String construirePatternCouleurs() {
         StringBuilder stringBuilder = new StringBuilder();
         Arrays.stream(Color.values()).forEach(color -> stringBuilder.append(color.name()));
-        return "(" + "[" + stringBuilder.toString() + "]"+ ")";
+        return "(" + "[" + stringBuilder.toString() + "]" + ")";
     }
 }

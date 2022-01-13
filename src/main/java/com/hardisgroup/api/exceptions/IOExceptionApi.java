@@ -4,6 +4,10 @@ package com.hardisgroup.api.exceptions;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+/**
+ * IOExceptionApi.
+ * Levée en cas de lecture d'un fichier invalide (fichier absent ou donénes corrompues).
+ */
 @Getter
 public class IOExceptionApi extends RuntimeException {
     HttpStatus code;
@@ -14,6 +18,7 @@ public class IOExceptionApi extends RuntimeException {
         this.details = details;
     }
 
+    // Constructeur avec message (ex: IOException)
     public IOExceptionApi(HttpStatus code, String details, String message) {
         super(message);
         this.code = code;

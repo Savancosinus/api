@@ -5,11 +5,9 @@ import com.hardisgroup.api.enums.FormatFichierEnSortie;
 import com.hardisgroup.api.services.FichierService;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -17,8 +15,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+// @RunWith(SpringRunner.class) // Inutile (UNKNOWN)
+// @SpringBootTest // Ne pas lancer le contexte Spring pour un TU!
+// https://spring.io/guides/gs/testing-web/
+@WebMvcTest(controllers = FichierController.class)
 public class FichierControllerTest {
 
     FichierController fichierController;
@@ -34,17 +34,20 @@ public class FichierControllerTest {
     }
 
     /**
-     * Tester la lecture de fichiers.
-     * Le fichier est présent sous "src/test/resources/abc.txt".
+     * Tester l'url du controller. Le test marque "fichierService" avec "@Mock": sans directive spéciale,
+     * le mock renverra tjrs 200 ("Nothing to write: null body"). Ce test ne nécessite pas de contexte Spring, mais il
+     * ne teste que l'url du controller et les paramètres qui lui sont associés, pas le service.
+     * Le fichier de test est présent sous "src/test/resources/abc.txt".
      */
     @Test
     public void traiterFichierTestUrl_OK() throws Exception {
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(fichierController).build();
 
-        // MockMvc: Valorisation des RequestParam
-        mockMvc.perform(get("/api/fichier/traiter")
+        // MockMvc: Valorisation des PathVariable/RequestParam
+        // - Le nom du RequestParam DOIT correspondre exactement avec celui déclaré dans le controller.
+        // - Le nom du PathVariable n'est pas obligatoirement celui déclaré dans le controller.
+        mockMvc.perform(get("/api/fichiers/traiter/{format}", FormatFichierEnSortie.JSON.toString())
                         .param("urlEntrante", "src/test/resources/abc.txt")
-                        .param("formatFichierEnSortie", FormatFichierEnSortie.JSON.toString())
                         .param("urlSortante", "src/test/resources/abc.txt"))
                 .andExpect(status().isOk());
     }

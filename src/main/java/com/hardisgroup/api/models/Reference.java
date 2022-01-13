@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * DTO de l'objet "Reference".
+ * DTO "Reference".
  * Objet représentant une ligne traitée avec succès par le service "FichierService".
  * numReference: Référence métier de l'objet (exactement 10 digits).
  */
